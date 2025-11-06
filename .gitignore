@@ -1,0 +1,13 @@
+# ไฟล์ข้อมูล Database ที่เป็น Volume (ป้องกันไว้ก่อน)
+db_data/
+
+# โฟลเดอร์ที่เก็บ Dependencies ของ PHP (ถ้าใช้ Composer)
+vendor/
+
+# ไฟล์ตั้งค่าของ Editor/IDE
+.vscode/
+.idea/
+
+# ไฟล์ OS
+.DS_Store
+Thumbs.db

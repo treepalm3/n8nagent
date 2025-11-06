@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # 1. Service PHP (อันเดิม)
+  web:
+    build: ./php
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      DB_HOST: db
+      DB_DATABASE: mydatabase
+      DB_USER: myuser
+      DB_PASSWORD: mypassword
+    depends_on:
+      - db
+
+  # 2. Service MySQL (อันเดิม)
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # 3. 🚀 Service ใหม่: phpMyAdmin (เพิ่มส่วนนี้)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"  # เข้าผ่านพอร์ต 8081 (เพราะ 8080 ถูกใช้โดย web)
+    environment:
+      PMA_HOST: db   # 👈 นี่คือหัวใจสำคัญ: บอกให้เชื่อมต่อไปยัง service 'db'
+      PMA_PORT: 3306
+    depends_on:
+      - db           # รอให้ db พร้อมก่อน
+
+volumes:
+  db_data:
